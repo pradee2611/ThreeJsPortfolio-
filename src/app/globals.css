@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+:root {
+  --bg: #0b0714;
+  --bg-soft: #130b21;
+  --ink: #f5f3fb;
+  --ink-dim: rgba(245, 243, 251, 0.64);
+  --ink-faint: rgba(245, 243, 251, 0.38);
+  --signal: #b794f6;   /* light violet — primary accent */
+  --agent: #7c3aed;    /* deep purple — secondary accent */
+  --line: rgba(245, 243, 251, 0.1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Hide the native cursor only on real pointer (mouse) devices */
+@media (pointer: fine) {
+  * { cursor: none !important; }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body), "Inter", sans-serif;
+  overflow-x: clip;
+}
+
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+::selection { background: var(--signal); color: #1a0f2e; }
+::-moz-selection { background: var(--signal); color: #1a0f2e; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+}
+
+.eyebrow {
+  font-family: var(--font-body), sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.text-dim { color: var(--ink-dim); }
+.text-faint { color: var(--ink-faint); }
+
+/* Small narrative line above a section's eyebrow — the "story" thread */
+.story-line {
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin-bottom: 0.6rem;
+}
+
+/* ── Ghost outline heading (accent stroke, no fill) ───────────── */
+.ghost {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(244, 246, 250, 0.55);
+}
+.ghost-signal {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--signal);
+}
+
+/* ── Film grain overlay ───────────────────────────────────────── */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.045;
+  will-change: auto;
+  contain: strict;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Vignette so the 3D hero reads as cinematic, not a demo ─────── */
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background:
+    radial-gradient(120% 90% at 50% 8%, transparent 40%, rgba(11,7,20,0.55) 100%),
+    radial-gradient(140% 100% at 50% 100%, transparent 45%, rgba(11,7,20,0.85) 100%);
+}
+
+/* ── Purple atmosphere wash — sits above the 3D canvas, below content ── */
+.aurora {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(55% 45% at 22% 15%, rgba(183,148,246,0.16), transparent 70%),
+    radial-gradient(50% 45% at 82% 30%, rgba(124,58,237,0.18), transparent 70%),
+    radial-gradient(60% 50% at 50% 100%, rgba(124,58,237,0.14), transparent 70%);
+}
+
+/* ── Glass panel ──────────────────────────────────────────────── */
+.panel {
+  background: linear-gradient(155deg, rgba(15,18,26,0.66), rgba(9,11,16,0.42));
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+}
+
+/* ── Custom slim scrollbar ────────────────────────────────────── */
+.custom-scroll { scrollbar-width: thin; scrollbar-color: rgba(183,148,246,0.4) transparent; }
+.custom-scroll::-webkit-scrollbar { width: 4px; }
+.custom-scroll::-webkit-scrollbar-track { background: transparent; }
+.custom-scroll::-webkit-scrollbar-thumb { background: rgba(183,148,246,0.35); border-radius: 99px; }
+
+/* ── Section rhythm ───────────────────────────────────────────── */
+.section { position: relative; padding: clamp(5rem, 12vh, 9rem) 0; }
+.container { width: 100%; max-width: 84rem; margin-inline: auto; padding-inline: clamp(1.25rem, 5vw, 4rem); }
+
+.hairline { height: 1px; width: 100%; background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent); }
+
+/* number chip, used in section headers + project cards */
+.chip-num {
+  font-family: var(--font-body), monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--signal);
+  border: 1px solid rgba(183,148,246,0.3);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+}
+
+/* ── Custom cursor ────────────────────────────────────────────── */
+.cursor-dot, .cursor-ring {
+  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 200;
+  border-radius: 50%; will-change: transform;
+  transform: translate3d(-50%, -50%, 0);
+}
+.cursor-dot { width: 6px; height: 6px; background: var(--signal); }
+.cursor-ring {
+  width: 34px; height: 34px; border: 1px solid rgba(183,148,246,0.55);
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.cursor-ring.is-hover {
+  width: 56px; height: 56px; background: rgba(183,148,246,0.08); border-color: var(--signal);
+}
+@media (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* ── Scroll-reveal base state (JS/GSAP flips these) ──────────── */
+.reveal-line { overflow: hidden; }
+
+/* ── Interactive helpers ─────────────────────────────────────── */
+/* cursor-following spotlight: set --mx/--my on the element from JS */
+.spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(183, 148, 246, 0.2), transparent 70%);
+}
+.spot:hover::before { opacity: 1; }
+
+@keyframes chipIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+.chip-in { animation: chipIn 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+/* project artwork motion */
+@keyframes artSpin  { to { transform: rotate(360deg); } }
+@keyframes artPulse { 0%, 100% { opacity: 0.55; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+@keyframes artDash  { to { stroke-dashoffset: -44; } }
+@keyframes artRise  { 0%, 100% { transform: scaleY(0.82); } 50% { transform: scaleY(1); } }
+@keyframes artBar   { 0%, 100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
+@keyframes artTile  { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.6; } }
+@keyframes artDrift { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-24px, 14px); } }
+.art-pulse { animation: artPulse 2.8s ease-in-out infinite; }
+.art-dash  { stroke-dasharray: 5 6; animation: artDash 3s linear infinite; }
+.art-rise  { animation: artRise 3.2s ease-in-out infinite; }
+.art-bar   { animation: artBar 2.6s ease-in-out infinite; }
+.art-tile  { animation: artTile 2.6s ease-in-out infinite; }
+.art-drift { animation: artDrift 9s ease-in-out infinite; }
+
+/* project modal */
+@keyframes modalIn { from { opacity: 0; transform: translateY(22px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+.modal-card { animation: modalIn 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.modal-backdrop { animation: fadeIn 0.3s ease both; }
+
+/* rotating hero word */
+.rot-word { display: inline-block; }
+
+@media (prefers-reduced-motion: reduce) {
+  .chip-in, .modal-card, .modal-backdrop { animation: none; }
+  .art-pulse, .art-dash, .art-rise, .art-bar, .art-tile, .art-drift { animation: none; }
+}
+
+/* hero extras */
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee-track { animation: marquee 38s linear infinite; }
+.hero-marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes wheel { 0%, 100% { transform: translate(-50%, 0); opacity: 1; } 60% { transform: translate(-50%, 12px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+/* serif display + decode glitch */
+.font-serif-display { font-family: var(--font-serif), "Instrument Serif", Georgia, serif; font-weight: 400; letter-spacing: -0.01em; text-transform: none; }
+.scr-title .scr { display: inline; }
+.is-scrambling {
+  text-shadow: -1.5px 0 rgba(60, 255, 170, 0.65), 1.5px 0 rgba(255, 80, 220, 0.65);
+  font-variant-numeric: tabular-nums;
+}
+.vista-beat, .orbit-beat { text-shadow: 0 2px 22px rgba(11, 7, 20, 0.85), 0 0 3px rgba(11, 7, 20, 0.5); }
+.vista-beat .is-scrambling, .orbit-beat .is-scrambling { text-shadow: -1.5px 0 rgba(60, 255, 170, 0.7), 1.5px 0 rgba(255, 80, 220, 0.7), 0 2px 22px rgba(11, 7, 20, 0.85); }
+
+/* editorial story beats */
+.tag-pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  background: linear-gradient(135deg, #7c3aed, #b794f6);
+  color: #fff;
+  font-family: var(--font-body), sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: none;
+}
+.font-serif-display em { font-style: italic; }
+
+html.is-loading, html.is-loading body { overflow: hidden; height: 100%; }
+
+/* ── Phones: cheaper compositing, tighter rhythm ─────────────── */
+@media (max-width: 767px) {
+  .panel { backdrop-filter: none; -webkit-backdrop-filter: none; background: linear-gradient(155deg, rgba(20,14,36,0.86), rgba(12,8,22,0.78)); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+  .grain-overlay { display: none; }
+  .section { padding: clamp(3.5rem, 9vh, 5.5rem) 0; }
+  .marquee-track { animation-duration: 28s; }
+}
+/* the URL bar on phones changes vh — small viewport units keep sticky scenes stable */
+@supports (height: 100svh) { .min-h-screen-safe { min-height: 100svh; } }
+
+@media (max-width: 767px) {
+  .hero-section::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: linear-gradient(180deg, rgba(11,7,20,0.15) 0%, rgba(11,7,20,0.0) 30%, rgba(11,7,20,0.7) 100%); }
+}
